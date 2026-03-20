@@ -32,7 +32,7 @@ html, body {
 }
 
 .bg-image {
-  background-image: url("assets/background/modernclient_main_menu.png");
+  background-image: url("assets/background/modernclient_main_menu.png?v=20260319");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
