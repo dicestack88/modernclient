@@ -10,18 +10,7 @@ createApp({
         { value: 'wasm', label: 'WASM Build' }
       ],
       selectedBuild: { value: 'wasm', label: 'WASM Build' },
-      mouseX: 0.5,
-      mouseY: 0.5
     };
-  },
-  computed: {
-    bgStyle() {
-      const tx = (this.mouseX - 0.5) * 30;
-      const ty = (this.mouseY - 0.5) * 24;
-      return {
-        transform: `translate(${tx}px, ${ty}px) scale(1.12)`
-      };
-    }
   },
   methods: {
     selectBuild(option) {
@@ -35,21 +24,36 @@ createApp({
     onMouseMove(event) {
       const w = window.innerWidth || 1;
       const h = window.innerHeight || 1;
-      this.mouseX = event.clientX / w;
-      this.mouseY = event.clientY / h;
+      this._targetX = event.clientX / w;
+      this._targetY = event.clientY / h;
     }
   },
   mounted() {
-    requestAnimationFrame(() => {
-      this.ready = true;
-    });
+    requestAnimationFrame(() => { this.ready = true; });
+
+    // Smooth parallax — lerp current position toward mouse target each frame,
+    // matching the lazy inertia of the in-game main menu background.
+    let curX = 0.5, curY = 0.5;
+    this._targetX = 0.5;
+    this._targetY = 0.5;
+    const bgEl = document.querySelector('.bg-image');
+    const LERP = 0.055; // lower = more lag, higher = snappier
+    const MAX_X = 28, MAX_Y = 22;
+
+    const tick = () => {
+      curX += (this._targetX - curX) * LERP;
+      curY += (this._targetY - curY) * LERP;
+      const tx = (curX - 0.5) * MAX_X;
+      const ty = (curY - 0.5) * MAX_Y;
+      if (bgEl) bgEl.style.transform = `translate(${tx}px, ${ty}px) scale(1.15)`;
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
 
     document.addEventListener('click', (e) => {
       const dropdown = document.querySelector('.dropdown');
       if (!dropdown) return;
-      if (!dropdown.contains(e.target)) {
-        this.openDropdown = false;
-      }
+      if (!dropdown.contains(e.target)) this.openDropdown = false;
     });
   }
 }).mount('#app');
