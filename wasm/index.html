@@ -32,7 +32,7 @@
 					console.log("Downloading assets.epk...");
 					var assetsEPK;
 					try {
-						assetsEPK = new Uint8Array(await fetch("assets.epk?v=20260319").then(resp => resp.arrayBuffer()));
+						assetsEPK = new Uint8Array(await fetch("assets.epk?v=20260330").then(resp => resp.arrayBuffer()));
 					}catch(ex) {
 						alert("Could not download assets.epk!");
 						console.error("Could not download assets.epk!");
@@ -61,13 +61,13 @@
 							return eaglercraftXOpts;
 						},
 						getEagRuntimeJSURL: function() {
-							return "eagruntime.js?v=20260319";
+							return "eagruntime.js?v=20260330";
 						},
 						getClassesWASMURL: function() {
-							return "classes.wasm?v=20260319";
+							return "classes.wasm?v=20260330";
 						},
 						getClassesDeobfWASMURL: function() {
-							return "classes.wasm-deobfuscator.wasm?v=20260319";
+							return "classes.wasm-deobfuscator.wasm?v=20260330";
 						},
 						getClassesTEADBGURL: function() {
 							return "classes.wasm.teadbg";
@@ -113,7 +113,7 @@
 					
 					const scriptElement = document.createElement("script");
 					scriptElement.type = "text/javascript";
-					scriptElement.src = "eagruntime.js?v=20260319";
+					scriptElement.src = "eagruntime.js?v=20260330";
 					document.head.appendChild(scriptElement);
 				}
 			});
